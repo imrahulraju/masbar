@@ -1,0 +1,52 @@
+[
+  {
+    "full_name": "Jassim Al-Kuwari",
+    "job_title": "Managing Director",
+    "photograph": "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?auto=format&fit=crop&w=600&q=70",
+    "short_biography": "Qatari business leader with 15+ years across operations, trading and corporate services in Doha.",
+    "qualifications": [
+      "BBA — Qatar University",
+      "Operations Leadership"
+    ],
+    "experience": "15+ years in Qatar",
+    "expertise": [
+      "Leadership",
+      "Operations"
+    ],
+    "display_order": 1,
+    "published": true
+  },
+  {
+    "full_name": "Mohammed Al-Ansari",
+    "job_title": "Warehouse Operations Manager",
+    "photograph": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=70",
+    "short_biography": "Runs MISBAR's non-food storage operations — inventory control, FIFO discipline and safe dispatch.",
+    "qualifications": [
+      "Supply Chain & Warehousing",
+      "HSE Certified"
+    ],
+    "experience": "12+ years warehousing",
+    "expertise": [
+      "Warehousing",
+      "Inventory"
+    ],
+    "display_order": 2,
+    "published": true
+  },
+  {
+    "full_name": "Fatima Al-Sulaiti",
+    "job_title": "Management Consultant",
+    "photograph": "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=600&q=70",
+    "short_biography": "Bilingual Arabic–English consultant on costs, SOPs and performance improvement.",
+    "qualifications": [
+      "MBA — Finance & Strategy"
+    ],
+    "experience": "10+ years consultancy",
+    "expertise": [
+      "Consultancy",
+      "SOPs"
+    ],
+    "display_order": 3,
+    "published": true
+  }
+]

@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Content Admin (Phase 1) | MISBAR</title><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=22"><link rel="icon" type="image/png" href="assets/img/logo.png">
+</head><body>
+<header class="ma-header"><div class="ma-container ma-header__inner"><a class="ma-brand" href="index.html"><span class="ma-brand__mark"><img class="ma-brand__logo" src="assets/img/logo.png" alt="MISBAR logo"></span></a><a class="ma-btn ma-btn--gold ma-header__cta" href="index.html">View Site</a></div></header>
+<section class="ma-section"><div class="ma-container"><span class="ma-section__eyebrow">CMS stand-in until headless CMS</span>
+<h1>Manage Team Profiles</h1><p class="ma-section__lead">Add, edit, reorder, publish/unpublish. Saved in this browser (localStorage); export JSON for handover or CMS import. Photos: paste an image URL.</p>
+<div class="ma-admin"><div class="ma-form__grid"><div class="ma-form__field"><label>Name</label><input id="f-name" placeholder="Full name"></div>
+<div class="ma-form__field"><label>Job title</label><input id="f-role" placeholder="e.g. Warehouse Operations Manager"></div>
+<div class="ma-form__field"><label>Initials (avatar fallback)</label><input id="f-init" placeholder="e.g. WO"></div>
+<div class="ma-form__field"><label>Photo URL (optional)</label><input id="f-photo" placeholder="https://..."></div>
+<div class="ma-form__field ma-form__field--full"><label>Biography</label><textarea id="f-bio" rows="3"></textarea></div>
+<div class="ma-form__field ma-form__field--full"><label>Expertise (comma-separated)</label><input id="f-exp" placeholder="Warehousing, Inventory, SOPs"></div></div>
+<div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap"><button class="ma-btn ma-btn--gold" onclick="addM()">Add Member</button><button class="ma-btn ma-btn--dark" onclick="exp()">Export JSON</button><button class="ma-btn ma-btn--outline" style="color:#8a6d2b;border-color:#C9A451" onclick="resetM()">Reset to defaults</button></div>
+<div id="list" style="margin-top:1.2rem;display:grid;gap:.7rem"></div></div>
+<p class="ma-text--muted" style="margin-top:1rem">Enquiries submitted via the contact form are stored in this browser under <code>misbar_enquiries</code> (Phase 1). Connect a form endpoint / headless CMS at launch for production storage and email notifications.</p>
+</div></section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script><script src="assets/js/site-data.js?v=7"></script><script src="assets/js/animations.js"></script>
+<script>
+function get(){try{var o=JSON.parse(localStorage.getItem("misbar_team")||"null");if(Array.isArray(o)&&o.length)return o;}catch(e){}return JSON.parse(JSON.stringify(MISBAR.defaultTeam));}
+function set(v){localStorage.setItem("misbar_team",JSON.stringify(v));render();}
+function render(){var l=get();document.getElementById("list").innerHTML=l.map(function(m,i){return '<div style="border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap"><b>#'+(i+1)+' '+m.name+'</b><span class="ma-team__tag">'+m.role+'</span><span style="margin-left:auto;display:flex;gap:.4rem"><button class="ma-btn ma-btn--dark" style="padding:.4rem .8rem" onclick="move('+i+',-1)">↑</button><button class="ma-btn ma-btn--dark" style="padding:.4rem .8rem" onclick="move('+i+',1)">↓</button><button class="ma-btn ma-btn--outline" style="padding:.4rem .8rem;color:#8a6d2b;border-color:#C9A451" onclick="del('+i+')">Remove</button></span></div>';}).join("");}
+function addM(){var l=get();l.push({name:document.getElementById("f-name").value||"New Member",role:document.getElementById("f-role").value||"Team Member",initials:document.getElementById("f-init").value||"M",photo:document.getElementById("f-photo").value||"",bio:document.getElementById("f-bio").value||"",expertise:(document.getElementById("f-exp").value||"").split(",").map(function(s){return s.trim();}).filter(Boolean)});set(l);}
+function del(i){var l=get();l.splice(i,1);set(l);} function move(i,d){var l=get();var j=i+d;if(j<0||j>=l.length)return;var t=l[i];l[i]=l[j];l[j]=t;set(l);}
+function exp(){var b=new Blob([localStorage.getItem("misbar_team")||JSON.stringify(MISBAR.defaultTeam,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="misbar-team.json";a.click();}
+function resetM(){localStorage.removeItem("misbar_team");render();} render();
+</script></body></html>
