@@ -298,7 +298,7 @@
       var tag=(p.tagName||"").toLowerCase();
       if(tag==="script"||tag==="style"||tag==="noscript") return;
       if(p.closest && p.closest("[data-no-i18n]")) return;
-      if(p.closest && p.closest("[data-hero-prev],[data-hero-next],[data-svc-prev],[data-svc-next]")) return;
+      if(p.closest && p.closest("[data-hero-prev],[data-hero-next],[data-svc-prev],[data-svc-next],[data-tst-prev],[data-tst-next]")) return;
       if(!n.__en){ n.__en = n.nodeValue; }
       if(isAr){
         var src = n.__en;
@@ -316,8 +316,8 @@
       if(!isAr && el.__en_ph) el.setAttribute("placeholder", el.__en_ph);
     });
     // slider arrows: mirror for RTL, keep LTR icons otherwise (BEM ma-)
-    document.querySelectorAll("[data-hero-prev],[data-svc-prev]").forEach(function(b){ b.textContent = isAr ? "→" : "←"; });
-    document.querySelectorAll("[data-hero-next],[data-svc-next]").forEach(function(b){ b.textContent = isAr ? "←" : "→"; });
+    document.querySelectorAll("[data-hero-prev],[data-svc-prev],[data-tst-prev]").forEach(function(b){ b.textContent = isAr ? "→" : "←"; });
+    document.querySelectorAll("[data-hero-next],[data-svc-next],[data-tst-next]").forEach(function(b){ b.textContent = isAr ? "←" : "→"; });
     // lang buttons
     document.querySelectorAll(".ma-header__lang").forEach(function(b){
       b.textContent = isAr ? "EN" : "عربي";

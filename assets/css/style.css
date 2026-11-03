@@ -118,6 +118,10 @@ footer h4{color:#fff;font-size:.95rem;letter-spacing:.06em} .ma-footer__bar{bord
 @media(max-width:680px){
   nav.ma-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0B0E14;flex-direction:column;align-items:stretch;padding:1rem 4%}
   nav.ma-nav.ma-nav--open{display:flex} .ma-header__burger{display:block} .ma-header__cta{display:none}
+  .ma-header__inner{gap:.7rem}
+  .ma-header__lang{margin-left:auto}
+  .ma-header__burger{margin-left:0}
+  [dir="rtl"] .ma-header__lang{margin-left:0;margin-right:auto}
   .ma-grid.ma-grid--3,.ma-grid.ma-grid--4,.ma-grid.ma-grid--2,.ma-team__grid,.ma-form__grid{grid-template-columns:1fr}
   .ma-section{padding:56px 0} .ma-steps{grid-template-columns:1fr} .ma-footer__grid{grid-template-columns:1fr}
   .ma-nav__dropdown-menu{position:static;display:block;background:transparent;border:0;box-shadow:none;padding:0}
@@ -133,7 +137,7 @@ footer h4{color:#fff;font-size:.95rem;letter-spacing:.06em} .ma-footer__bar{bord
 .ma-services__btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--gold);background:#10141C;color:var(--gold-2);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;transition:.22s}
 .ma-services__btn:hover{background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#10141C;transform:translateY(-1px)}
 .ma-services__btn:disabled{opacity:.35;cursor:default;transform:none}
-.ma-services__viewport{overflow:hidden;border-radius:14px;margin-top:1rem;cursor:grab}
+.ma-services__viewport{overflow:hidden;border-radius:14px;margin-top:1rem;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 .ma-services__viewport.ma-services__viewport--dragging{cursor:grabbing}
 .ma-services__track{display:flex;gap:1.3rem;transition:transform .6s cubic-bezier(.22,.9,.28,1);will-change:transform}
 .ma-services__slide{flex:0 0 calc(33.333% - .87rem);min-width:0}
@@ -530,3 +534,25 @@ p{font-size:1rem}
 html[dir="rtl"] .ma-hero__arrows{flex-direction:row;margin-left:0;margin-right:auto}
 html[dir="rtl"] .ma-hero__arrow,html[dir="rtl"] .ma-services__btn{transform:none}
 /* side arrows already mirrored via positions; keep glyphs set by i18n.js */
+.ma-testimonials__slide .ma-testimonials__card{height:100%}
+
+.ma-services__track img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;pointer-events:none}
+.ma-services__viewport--dragging{cursor:grabbing}
+.ma-hero,[data-hero]{touch-action:pan-y}
+.ma-hero img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
+.ma-services__track--dragging{transition:none!important}
+
+/* ===== ma-loader: first-visit page loader (BEM ma-) ===== */
+.ma-loader{position:fixed;inset:0;z-index:9999;background:#10141C;display:flex;align-items:center;justify-content:center;transition:opacity .45s ease}
+.ma-loader--hide{opacity:0;pointer-events:none}
+.ma-loader__badge{position:relative;width:136px;height:136px;display:grid;place-items:center;background:#fff;border:2px solid var(--gold);border-radius:50%;box-shadow:0 20px 60px rgba(0,0,0,.45);animation:ma-loader-pulse 1.8s ease-in-out infinite}
+.ma-loader__logo{width:88px;height:88px;object-fit:contain;border-radius:0}
+.ma-loader__ring{position:absolute;inset:-16px;border-radius:50%;border:3px solid transparent;border-top-color:#E5C77E;border-right-color:rgba(229,199,126,.85);filter:drop-shadow(0 0 8px rgba(229,199,126,.55));animation:ma-loader-spin 1s linear infinite}
+.ma-loader__ring--soft{position:absolute;inset:-7px;border-radius:50%;border:1px dashed rgba(229,199,126,.5);animation:ma-loader-spin-rev 6s linear infinite}
+.ma-loader__orbit{position:absolute;inset:-16px;border-radius:50%;animation:ma-loader-spin 1.8s linear infinite;pointer-events:none}
+.ma-loader__orbit i{position:absolute;top:-6px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:linear-gradient(135deg,#E5C77E,#C9A451);box-shadow:0 0 12px rgba(229,199,126,.9),0 0 3px #fff}
+@keyframes ma-loader-spin{to{transform:rotate(360deg)}}
+@keyframes ma-loader-spin-rev{to{transform:rotate(-360deg)}}
+@keyframes ma-loader-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+html.ma-loader--lock{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.ma-loader__ring,.ma-loader__ring--soft,.ma-loader__orbit,.ma-loader__badge{animation:none}}
