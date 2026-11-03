@@ -11,11 +11,26 @@
   // Header shrink on scroll
   ScrollTrigger.create({start:40,onUpdate:function(s){},onToggle:function(s){document.querySelector(".ma-header").classList.toggle("ma-header--scrolled",s.isActive);}});
   // Hero entrance timeline (all pages: .hero-inner or .page-hero)
-  var tl = gsap.timeline({defaults:{ease:"power3.out"}});
-  tl.from(".ma-header",{y:-70,opacity:0,duration:.7})
-    .from("[data-hero] .ma-hero__slide.ma-hero__slide--active > .ma-container > div > *, .ma-page-hero .ma-container > *",{y:34,opacity:0,duration:.8,stagger:.1},"-=.35")
-    .from(".ma-hero__badges span",{y:16,opacity:0,duration:.5,stagger:.08},"-=.4")
-    .from(".ma-hero__cta .ma-btn",{y:18,opacity:0,scale:.96,duration:.5,stagger:.1},"-=.5");
+  // NOTE: deferred until ma-loader-done — running opacity tweens under the first-visit
+  // loader left hero copy stuck at opacity:0 on mobile Safari (double-tween conflict
+  // with main.js hero animate()). overwrite:auto + clearProps keeps it recoverable.
+  function playHeroEntrance(){
+    if(playHeroEntrance.done) return; playHeroEntrance.done=true;
+    var tl = gsap.timeline({defaults:{ease:"power3.out"}});
+    tl.from(".ma-header",{y:-70,opacity:0,duration:.7,overwrite:"auto",clearProps:"transform"})
+      .fromTo("[data-hero] .ma-hero__slide.ma-hero__slide--active > .ma-container > div > *, .ma-page-hero .ma-container > *",
+        {y:34,opacity:0},{y:0,opacity:1,duration:.8,stagger:.1,overwrite:"auto",clearProps:"transform"},"-=.35")
+      .fromTo(".ma-hero__badges span",
+        {y:16,opacity:0},{y:0,opacity:1,duration:.5,stagger:.08,overwrite:"auto",clearProps:"transform"},"-=.4")
+      .fromTo(".ma-hero__cta .ma-btn",
+        {y:18,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.5,stagger:.1,overwrite:"auto",clearProps:"transform"},"-=.5");
+  }
+  try{
+    if(document.querySelector("[data-loader]") && !document.body.classList.contains("ma-ready")){
+      window.addEventListener("ma-loader-done",playHeroEntrance,{once:true});
+      setTimeout(playHeroEntrance,3000); // fallback: never leave hero hidden
+    } else { playHeroEntrance(); }
+  }catch(e){ playHeroEntrance(); }
   // Hero background slow parallax + subtle zoom on load
   var bg = document.querySelector(".ma-hero__bg");
   if(bg){ gsap.fromTo(bg,{scale:1.12},{scale:1,duration:2.2,ease:"power2.out"});

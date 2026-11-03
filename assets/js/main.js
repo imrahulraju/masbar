@@ -1,13 +1,18 @@
 // ma-loader: first-visit only (sessionStorage), logo + spinning ring
 (function(){
   var loader = document.querySelector("[data-loader]"); if(!loader) return;
-  try{ if(sessionStorage.getItem("misbar_loader_seen")==="1"){ loader.remove(); return; } }catch(e){}
+  try{ if(sessionStorage.getItem("misbar_loader_seen")==="1"){ loader.remove(); document.body.classList.add("ma-ready"); return; } }catch(e){}
   document.documentElement.classList.add("ma-loader--lock");
   var done=false, t0=Date.now(), MIN=1100;
+  function notifyDone(){
+    document.body.classList.add("ma-ready");
+    try{ window.dispatchEvent(new Event("ma-loader-done")); }catch(e){}
+  }
   function finish(){
     if(done) return; done=true;
     try{ sessionStorage.setItem("misbar_loader_seen","1"); }catch(e){}
     document.documentElement.classList.remove("ma-loader--lock");
+    notifyDone();
     if(window.gsap){ gsap.to(loader,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){ if(loader.parentNode) loader.parentNode.removeChild(loader); }}); }
     else { loader.classList.add("ma-loader--hide"); setTimeout(function(){ if(loader.parentNode) loader.parentNode.removeChild(loader); },500); }
   }
@@ -201,7 +206,7 @@ function maSwipe(el, onLeft, onRight){
   function animate(slide){
     if(!window.gsap) return;
     var els=slide.querySelectorAll(".ma-hero__kicker,h1,p,.ma-hero__cta,.ma-hero__stats,.ma-hero__badges,.ma-hero__card,.ma-hero__float");
-    gsap.fromTo(els,{y:34,opacity:0},{y:0,opacity:1,duration:.85,stagger:.09,ease:"power3.out",overwrite:"auto"});
+    gsap.fromTo(els,{y:34,opacity:0},{y:0,opacity:1,duration:.85,stagger:.09,ease:"power3.out",overwrite:"auto",clearProps:"transform"});
   }
   function go(n){ slides[i].classList.remove("ma-hero__slide--active"); i=(n+slides.length)%slides.length; slides[i].classList.add("ma-hero__slide--active");
     dotsBox.querySelectorAll(".ma-hero__dot").forEach(function(b,bi){b.classList.remove("ma-hero__dot--active"); if(bi===i){void b.offsetWidth; b.classList.add("ma-hero__dot--active");}});
@@ -215,7 +220,25 @@ function maSwipe(el, onLeft, onRight){
   root.addEventListener("pointerdown",function(){if(timer)clearInterval(timer);});
   root.addEventListener("mouseenter",function(){if(timer)clearInterval(timer);});
   root.addEventListener("mouseleave",restart);
-  animate(slides[0]); restart();
+  function forceVisible(){
+    try{
+      var els=slides[i].querySelectorAll(".ma-hero__kicker,h1,p,.ma-hero__cta,.ma-hero__stats,.ma-hero__badges,.ma-hero__card,.ma-hero__float");
+      if(window.gsap) gsap.set(els,{opacity:1,y:0});
+      var hero=root.closest ? root : document.querySelector("[data-hero]");
+      if(hero && hero.classList) hero.classList.add("ma-hero--safe");
+    }catch(e){}
+  }
+  function initial(){
+    // If first-visit loader is showing, replay entrance as it lifts so Safari never traps opacity:0 underneath
+    animate(slides[0]);
+    try{
+      if(document.querySelector("[data-loader]") && !document.body.classList.contains("ma-ready")){
+        window.addEventListener("ma-loader-done",function onDone(){ animate(slides[i]); setTimeout(forceVisible,900); },{once:true});
+        setTimeout(forceVisible,3000); // fallback: never leave hero copy hidden
+      } else { setTimeout(forceVisible,2500); }
+    }catch(e){}
+  }
+  initial(); restart();
 })();
 
 // Counters + FAQ accordion (reference-inspired bands)

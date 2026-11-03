@@ -556,3 +556,24 @@ html[dir="rtl"] .ma-hero__arrow,html[dir="rtl"] .ma-services__btn{transform:none
 @keyframes ma-loader-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
 html.ma-loader--lock{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.ma-loader__ring,.ma-loader__ring--soft,.ma-loader__orbit,.ma-loader__badge{animation:none}}
+/* ===== ma-safari: mobile Safari first-load + prefix hardening (BEM ma-) ===== */
+/* -webkit- backdrop-filter mirrors (Safari needs prefix; unprefixed kept above) */
+.ma-header{-webkit-backdrop-filter:blur(12px)}
+.ma-hero__kicker{-webkit-backdrop-filter:blur(6px)}
+.ma-hero__card{-webkit-backdrop-filter:blur(14px)}
+.ma-hero__float{-webkit-backdrop-filter:blur(10px)}
+.ma-hero__arrow{-webkit-backdrop-filter:blur(8px)}
+.ma-hero__marquee{-webkit-backdrop-filter:blur(8px)}
+.ma-cta .ma-cta__photo .ma-cta__caption{-webkit-backdrop-filter:blur(8px)}
+/* Gradient gold text: Safari requires -webkit-text-fill-color */
+.ma-hero__slide h1 .ma-text--gold{-webkit-text-fill-color:transparent}
+.ma-hero__stats b{-webkit-text-fill-color:transparent;-webkit-background-clip:text}
+/* Safari compositing: promote hero content to its own layer so opacity tweens can't trap it */
+.ma-hero__slide .ma-container{ -webkit-transform:translateZ(0); transform:translateZ(0)}
+/* Safety net: if GSAP stalls on first load, hero copy stays readable (JS sets .ma-hero--safe) */
+.ma-hero.ma-hero--safe .ma-hero__slide--active .ma-hero__kicker,
+.ma-hero.ma-hero--safe .ma-hero__slide--active h1,
+.ma-hero.ma-hero--safe .ma-hero__slide--active p,
+.ma-hero.ma-hero--safe .ma-hero__slide--active .ma-hero__cta,
+.ma-hero.ma-hero--safe .ma-hero__slide--active .ma-hero__stats,
+.ma-hero.ma-hero--safe .ma-hero__slide--active .ma-hero__badges{opacity:1;visibility:visible}
